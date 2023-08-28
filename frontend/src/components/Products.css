@@ -1,0 +1,12 @@
+.products {
+    display: inline-flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+
+}
+
+.card {
+    max-width: 250px;
+    display:'flex';
+    flex-direction:'row';
+}

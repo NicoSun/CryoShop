@@ -1,0 +1,15 @@
+.total{
+  padding: 1em;
+  background: white;
+  border-radius: 3px;
+}
+
+.total__p{
+  font-size: 1em;
+  color: rgb(72, 77, 77);
+}
+
+.total > button:active{
+  background-color: unset;
+  border: 1px solid #FFD814;
+}
