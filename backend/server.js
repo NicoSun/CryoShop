@@ -3,6 +3,7 @@
 // to-di-list
 // mvc
 // acme bank in Data Security (user management)
+// passport in node/express for user authentication
 
 
 const express = require('express');
@@ -50,9 +51,14 @@ app.use((error, request, response, next) => {
 // session cookie with timeout
 app.use(
   session({
-    secret: "secret",
+    secret: "gu$035cJ£cx9*J90mn^V87t6bz",
     resave: true,
     saveUninitialized: true,
+    cookie: {
+      maxAge: 60000, //one hour
+      secure: true,
+      httpOnly: true,
+    },
   })
 );
 
@@ -64,13 +70,14 @@ const corsOptions = {
   origin: `http://localhost:${frontport}` 
 };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
 
 // route middlewares
-app.use('/Products', ProductRoutes);
-// app.use('/Store', StoreRoutes);
-app.use('/Users', UserRoutes);
-app.use('/Orders', OrderRoutes);
+app.use('/api/Products', ProductRoutes);
+// app.use('/api/Store', StoreRoutes);
+app.use('/api/Users', UserRoutes);
+app.use('/api/Orders', OrderRoutes);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console

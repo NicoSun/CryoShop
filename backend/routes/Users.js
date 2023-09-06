@@ -1,6 +1,5 @@
 // require express and it's router component
 const express = require('express');
-
 const router = express.Router();
 
 // require the middlewares and callback functions from the controller directory
@@ -19,9 +18,9 @@ const {
 // Create POST route to create an User
 router.post('/create', createUser);
 // Create GET route to read an User
-router.get('/get/:name', getUserByName, read);
+router.get('/info/:name', getUserByName, read);
 // Create PUT route to update an User
-router.put('/get/:id', updateUser);
+router.put('/update', updateUser);
 // Create DELETE route to remove a User
 router.delete('/get/:id', deleteUser);
 // Create GET route to read a list oll Users

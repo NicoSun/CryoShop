@@ -8,7 +8,7 @@ exports.placeOrder = (req, res) => {
     const form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.parse(req, async (err, fields) => {
-      const { user_id, product_id, quantity, order_address} = fields;
+      const { user_id, product_id, product_quantity, product_price, order_address} = fields;
       // check for all fields
       if (orderValidator(fields)) {
         return res.status(400).json(orderValidator(fields));
@@ -16,13 +16,14 @@ exports.placeOrder = (req, res) => {
       try {
         const newID = uuidv4();
         const status = "received";
-        const shipDate = "error";
         const complete = false;
+        const now = new Date()
 
         const newOrder = await pool.query(
-          'INSERT INTO orders (id, user_id, product_id, product_quantity, order_address, status, complete) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-          [newID,user_id, product_id, quantity, order_address,status,complete]
+          'INSERT INTO orders (id, user_id, product_id, product_quantity, product_price, order_address, status, complete, ship_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+          [newID,user_id, product_id, product_quantity, product_price, order_address, status, complete,now]
         );
+        // await pool.query('UPDATE orders SET ship_date = $1 WHERE id = $2',[now,newID]);
         return res.status(201).send(`User added: ${newOrder.rowCount}`);
       } catch (error) {
         return res.status(400).json({

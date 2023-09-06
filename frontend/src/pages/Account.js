@@ -2,21 +2,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from '../components/Login.js';
 import SignUp from '../components/SignUp.js';
+import Settings from '../components/Settings.js';
 
 function Account() {
   // const cart = useSelector((state) => state.cart)
-  let loggedin = false
+  let loggedin = true
 
   if (loggedin) {
     return (
     <div className="cart">
       <h3>Account Page</h3>
       <div className="cart__left">
-      <h4>Setting</h4>
-      <ul>
-        <li>Payment</li>
-        <li>Address</li>
-      </ul>
+      <Settings />
     </div>
 
       <div className="cart__right">

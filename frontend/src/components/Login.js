@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
+import {postRequest} from '../api/index.js';
+
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // You can add your login logic here, such as making an API call to authenticate the user.
-    // For this example, let's just log the username and password to the console.
-    console.log('Username:', username);
-    console.log('Password:', password);
+    var bodyFormData = new FormData();
+    // bodyFormData.append('email', email);
+    bodyFormData.append('username', username);
+    bodyFormData.append('password', password);
+
+    let response = postRequest(`Users/login`,bodyFormData);
+    // console.log(response);
 
     // Reset the form fields
     setUsername('');
     setPassword('');
+
   };
 
   return (

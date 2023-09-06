@@ -2,7 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import {combineReducers} from "redux"; 
 import { cartReducer } from "./cartSlice.js";
 import { productReducer,categoryReducer } from "./productSlice.js";
-import { userReducer } from "./userSlice.js";
+import { userReducerGPT } from "./userslice.js";
+
+
 
 import storage from 'redux-persist/lib/storage';
 
@@ -24,7 +26,7 @@ const persistConfig = {
 
 const reducers = combineReducers({
   products: productReducer,
-  user: userReducer,
+  userGPT: userReducerGPT,
   category: categoryReducer,
   cart: cartReducer,
  });

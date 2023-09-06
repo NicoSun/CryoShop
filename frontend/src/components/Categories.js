@@ -28,9 +28,9 @@ const Categories = () => {
       <div className="categories">
         <h4>Category</h4>
         {category?.map((product) => (
-          <li key={product.id}>
+          <div key={product.id}>
             <p>{product.category}</p>
-          </li>
+            </div>
         ))}
       </div>
     );

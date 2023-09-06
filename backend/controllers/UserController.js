@@ -2,22 +2,37 @@ const formidable = require('formidable');
 const pool = require('../models/database');
 const { UserValidator } = require('../utils/index');
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require("bcrypt");
 
+const finduser = async (username) => {
+  const User = await pool.query(
+    'SELECT id, email, username, firstname, lastname, address, payment FROM users WHERE username = $1',
+    [username]
+    );
+    return User.rows;
+}
 
-exports.createUser = (req, res) => {
+exports.createUser = (req, res, next) => {
     const form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.parse(req, async (err, fields) => {
-      const { email, username, password, address, card_details,firstname,lastname} = fields;
+      const { email, username, password, address, payment,firstname,lastname} = fields;
       // check for all fields
       if (UserValidator(fields)) {
         return res.status(400).json(UserValidator(fields));
       }
+      if (await finduser(username).length > 0){
+        res.send("Username already exists!");
+        res.end();
+        return next();
+      }
       try {
         const newID = uuidv4();
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = await pool.query(
-          'INSERT INTO users (id, username, email, password, address, card_details,firstname,lastname) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-          [newID,username, email, password, address, card_details,firstname,lastname]
+          'INSERT INTO users (id, username, email, password, address, payment,firstname,lastname) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+          [newID,username, email, hashedPassword, address, payment,firstname,lastname]
         );
         return res.status(201).send(`User added: ${newUser.rowCount}`);
       } catch (error) {
@@ -45,12 +60,12 @@ exports.getAllUsers = async (req, res, next) => {
 exports.getUserByName = async (req, res, next) => {
 const username = req.params.name;
 try {
-    const User = await pool.query(
-    'SELECT * FROM users WHERE username = $1',
-    [username]
-    );
-    req.User = User.rows;
-    return next();
+    req.User = await finduser(username);
+    if (req.User.length > 0){
+      return next();
+    } else {
+      res.send("User doesn't exist!")
+    } 
 } catch (err) {
     return res.status(400).json({
     error: err,
@@ -60,19 +75,20 @@ try {
 
 
 exports.updateUser = async (req, res, next) => {
-  const id = req.params.id;
+  console.log("User Update Start!")
   const form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.parse(req, async (err, fields) => {
-      const { username, password, address,firstname,lastname} = fields;
+      console.log(fields)
+      const { id,email, username,firstname,lastname,address, payment} = fields;
       // check for all fields
-      if (UserValidator(fields)) {
-        return res.status(400).json(UserValidator(fields));
-      }
+      // if (UserValidator(fields)) {
+      //   return res.status(400).json(UserValidator(fields));
+      // }
       try {
         const newUser = await pool.query(
-          'UPDATE users SET username = $1, password = $2, address = $3, firstname = $4, lastname = $5 WHERE id = $6',
-          [username, password, address,firstname,lastname,id]
+          'UPDATE users SET email = $1, username = $2, firstname = $3, lastname = $4, address = $5, payment = $6 WHERE id = $7',
+          [email, username,firstname,lastname,address,payment,id]
         );
         return res.status(201).send(`User updated: ${newUser.rowCount}`);
       } catch (error) {
@@ -98,29 +114,32 @@ exports.deleteUser = async (req, res) => {
 
 // complete after data security integration
 exports.loginUser = async (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  if (username && password) {
-    db.get(
-      `SELECT * FROM users WHERE username = ? AND password = ?`,
-      [username, password],
-      function (error, results) {
-        console.log(error);
-        console.log(results);
-        if (results) {
-          req.session.loggedin = true;
-          req.session.username = results["username"];
-          res.redirect("/home");
-        } else {
-          res.send("Incorrect Username and/or Password!");
-        }
+  const form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.parse(req, async (err, fields) => {
+      const { email, username, password} = fields;
+      if (username && password) {
+        const User = await pool.query(
+          `SELECT * FROM users WHERE username = $1 AND password = $2`,
+          [username, password],
+          );
+          console.log(User.rows)
+          // console.log(User.rows)
+          if (User.rows){
+            // req.session.loggedin = true;
+            // req.session.username = User["username"];
+            // req.session.email = User["email"];
+            res.send("match found!")
+            // res.redirect("/");
+          } else {
+            res.send("Incorrect Username and/or Password!");
+          }
+          return next();
+      } else {
+        res.send("Please enter Username and Password!");
         res.end();
       }
-    );
-  } else {
-    res.send("Please enter Username and Password!");
-    res.end();
-  }
+    });
 };
 
 // complete after data security integration

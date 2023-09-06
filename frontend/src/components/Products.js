@@ -1,9 +1,8 @@
 import './Products.css';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
 import { setProductData } from '../redux/productSlice';
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux';
 
 import {fetchData} from '../api/index.js';
 
@@ -33,11 +32,11 @@ const Products = () => {
     <div className="products">
       {products?.map((product) => (
 
-        <div class="card" key={product.id}>
-        <img class="card-img-top" src={'product_images/' + product.product_imag + '.png'} alt="Card cap" />
-        <div class="card-body">
-          <h5 class="card-title">{product.product_name}</h5>
-          <p class="card-text">{product.product_desc}</p>
+        <div className="card" key={product.id}>
+        <img className="card-img-top" src={'product_images/' + product.product_imag + '.png'} alt="Card cap" />
+        <div className="card-body">
+          <h5 className="card-title">{product.product_name}</h5>
+          <p className="card-text">{product.product_desc}</p>
           <p>Price: £{product.product_price}</p> {/* Display price in GBP */}
           <button onClick={() => dispatch(addToCart(product))}>Add to Cart</button>
         </div>

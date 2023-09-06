@@ -1,8 +1,8 @@
 const validator = require("express-validator");
 
 exports.orderValidator = (fields) => {
-    const {  user_id, product_id, quantity, order_address } = fields;
-    if (!user_id || !product_id || !quantity || !order_address) {
+    const {  user_id, product_id, product_quantity, product_price, order_address } = fields;
+    if (!user_id || !product_id || !product_quantity || !order_address || !product_price) {
       const emptyFields = [];
       Object.keys(fields).forEach((field) => {
         if (fields[field].length <= 0) {
@@ -10,7 +10,7 @@ exports.orderValidator = (fields) => {
         }
       });
       return {
-        error: 'All fields are required',
+        error: 'All Order fields are required',
         emptyFields,
       };
     }

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import {postRequest} from '../api/index.js';
 
-let API_URL = process.env.REACT_APP_BACKEND_URL;
-let url = `${API_URL}/Users/create`;
 
 function SignUp() {
   const [username, setUsername] = useState('');
@@ -12,21 +10,13 @@ function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // You can add your SignUp logic here, such as making an API call to authenticate the user.
-    // For this example, let's just log the username and password to the console.
-    console.log('Username:', username);
-    console.log('Password:', password);
-
     var bodyFormData = new FormData();
     bodyFormData.append('email', email);
     bodyFormData.append('username', username);
     bodyFormData.append('password', password);
 
-    axios.post(url,bodyFormData).then((response) => {
-      console.log(response);
-    });
-
-
+    let response = postRequest(`Users/create`,bodyFormData);
+    // console.log(response);
 
     // Reset the form fields
     setUsername('');
