@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import {postRequest} from '../api/index.js';
-
+import { updateProperty } from '../redux/userslice.js';
+import { useDispatch } from 'react-redux';
 
 function SignUp() {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('');
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (event) => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     var bodyFormData = new FormData();
@@ -15,13 +19,16 @@ function SignUp() {
     bodyFormData.append('username', username);
     bodyFormData.append('password', password);
 
-    let response = postRequest(`Users/create`,bodyFormData);
-    // console.log(response);
+    let response = await postRequest(`Users/create`,bodyFormData);
+    for (const [key, value] of Object.entries(response.data)) {
+      dispatch(updateProperty({key,value}));
+    }
+    console.log(response);
 
     // Reset the form fields
-    setUsername('');
-    setPassword('');
-    setEmail('');
+    // setUsername('');
+    // setPassword('');
+    // setEmail('');
   };
 
   return (
@@ -58,6 +65,21 @@ function SignUp() {
             required
           />
         </div>
+        <div>
+          <label htmlFor="password">Confirm Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
+            required
+          />
+        </div>
+        {password !== password2 ? (
+          <p>Passwords don't match</p>
+        ) : (
+          <div></div>
+        )}
         <button type="submit">Sign Up</button>
       </form>
     </div>

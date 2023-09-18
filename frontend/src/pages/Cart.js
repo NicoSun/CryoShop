@@ -1,10 +1,12 @@
 import './cart.css'
 import Total from '../components/Total'
 import CartItem from '../components/CartItem'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import {postRequest} from '../api/index.js';
+import {resetAllKeys} from '../redux/cartSlice'
 
 function Cart() {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   let userdata = useSelector(state => state.userGPT.userGPT);
 
@@ -30,6 +32,7 @@ function Cart() {
     
     let response = postRequest(`Orders/place`,bodyFormData);
     console.log(response);
+    dispatch(resetAllKeys());
 
   };
 

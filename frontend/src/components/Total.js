@@ -18,10 +18,19 @@ function Total() {
   return (
     <div className="total">
       <h4>ORDER SUMMARY</h4>
-      <p className="total__p">
+      {cart.length === 0 ? (
+        <p>Nothing in the basket yet.</p>
+      ) : (
+        <div>
+          <p className="total__p">
         total ({getTotal().totalQuantity} items) 
-        : <strong>${getTotal().displayPrice}</strong>
+        : <strong>£{getTotal().displayPrice}</strong>
       </p>
+        <p>Shipping: <span className='shipping'>Free</span></p>
+        <p>Dispatch after 1 Day! Delivery in 3 Days!</p>
+        </div>
+      )}
+      
     </div>
   )
 }

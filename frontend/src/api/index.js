@@ -5,7 +5,7 @@ let API_URL = process.env.REACT_APP_BACKEND_URL;
 export const postRequest = async (endpoint,data) => {
     let url = `${API_URL}/api/${endpoint}`;
     const response2 = await axios.post(url,data).then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       }).catch(err => {
         console.log("API Post Error");

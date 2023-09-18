@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {combineReducers} from "redux"; 
 import { cartReducer } from "./cartSlice.js";
-import { productReducer,categoryReducer } from "./productSlice.js";
+import { productReducer, orderReducer } from "./productSlice.js";
 import { userReducerGPT } from "./userslice.js";
 
 
@@ -25,9 +25,9 @@ const persistConfig = {
 }
 
 const reducers = combineReducers({
-  products: productReducer,
   userGPT: userReducerGPT,
-  category: categoryReducer,
+  products: productReducer,
+  order: orderReducer,
   cart: cartReducer,
  });
 

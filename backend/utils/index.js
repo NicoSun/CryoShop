@@ -1,4 +1,4 @@
-const validator = require("express-validator");
+const {query,validationResult} = require("express-validator");
 
 exports.orderValidator = (fields) => {
     const {  user_id, product_id, product_quantity, product_price, order_address } = fields;
@@ -40,9 +40,33 @@ exports.ProductValidator = (fields) => {
   return null;
 };
 
-exports.UserValidator = (fields) => {
+exports.SignUpValidator = (fields) => {
   const { email, username, password} = fields;
   if (!email || !username || !password ) {
+    const emptyFields = [];
+    Object.keys(fields).forEach((field) => {
+      if (fields[field].length <= 0) {
+        emptyFields.push(field);
+      }
+    });
+    return {
+      error: 'Account creation Error. All fields are required',
+      emptyFields,
+    };
+  }
+  return null;
+};
+
+exports.LoginValidator = (fields) => {
+  const {username , password} = fields;
+  if (/^.+@.+\..+$/.test(username)) {
+    return true;
+  } else {
+    return false;
+  }
+  console.log(errors);
+
+  if (!username || !password ) {
     const emptyFields = [];
     Object.keys(fields).forEach((field) => {
       if (fields[field].length <= 0) {

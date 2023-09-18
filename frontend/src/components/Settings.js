@@ -1,21 +1,7 @@
-import React, { useEffect } from 'react';
-import {putRequest} from '../api/index.js';
+// import React, { useEffect } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import { updateProperty } from '../redux/userslice.js';
-import {fetchData} from '../api/index.js';
-
-const fetchAndSetData = () => async (dispatch) => {
-  try {
-      let endpoint = "Users/info/2345";
-      const data = await fetchData(endpoint);
-      for (const [key, value] of Object.entries(data[0])) {
-        dispatch(updateProperty({key,value}));
-      }
-      
-  } catch (error) {
-      console.log(error);
-  }
-  };
+import {putRequest} from '../api/index.js';
 
   const handleInputChange = (dispatch,key,value) => {
     try {
@@ -28,12 +14,7 @@ const fetchAndSetData = () => async (dispatch) => {
 
 function Settings() {
   const dispatch = useDispatch();
-
   let userdata = useSelector(state => state.userGPT.userGPT);
-
-  useEffect(() => {
-    dispatch(fetchAndSetData());
-  }, [dispatch]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -121,7 +102,7 @@ function Settings() {
   
   
         <div>
-        <button>Change Password</button>
+        {/* <button>Change Password</button> */}
         </div>
       </div>
     );

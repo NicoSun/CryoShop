@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {postRequest} from '../api/index.js';
+import { updateProperty } from '../redux/userslice.js';
+import { useDispatch } from 'react-redux';
 
 
 function Login() {
@@ -7,21 +9,25 @@ function Login() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (event) => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     var bodyFormData = new FormData();
-    // bodyFormData.append('email', email);
     bodyFormData.append('username', username);
     bodyFormData.append('password', password);
+    bodyFormData.append('email', email);
 
-    let response = postRequest(`Users/login`,bodyFormData);
-    // console.log(response);
+    let response = await postRequest(`Users/login`,bodyFormData);
+    for (const [key, value] of Object.entries(response.data)) {
+      dispatch(updateProperty({key,value}));
+    }
 
     // Reset the form fields
-    setUsername('');
-    setPassword('');
-
+    // setUsername('');
+    // setPassword('');
+    // handleLogin(dispatch);
   };
 
   return (
@@ -29,12 +35,12 @@ function Login() {
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">email:</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -48,6 +54,7 @@ function Login() {
             required
           />
         </div>
+
         <button type="submit">Login</button>
       </form>
     </div>

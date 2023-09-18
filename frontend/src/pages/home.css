@@ -2,36 +2,17 @@ body {
   background-color: rgb(6, 93, 151);
 }
 
-.shopping-cart {
-  background-color: black;
-  position: relative;
-  padding: 1em;
-  border-radius: 2em;
-  position: fixed;
-  bottom: 1em;
-  right: 10%;
-  z-index: 1;
-}
-
-.shopping-cart:active {
-  box-shadow: 0 4px 4px gray;
-}
-
-#cartIcon{
-  color: white;
-}
-
-.shopping-cart > p{
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: red;
-  padding: 4px 8px;
-  color: white;
-  border-radius: 1em;
-}
 
 .product_grid{
   flex-wrap: wrap;
+}
+
+.h4 {
+  text-align: left;
+}
+
+.container {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 

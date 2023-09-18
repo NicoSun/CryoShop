@@ -74,11 +74,11 @@ exports.getCategories = async (req, res, next) => {
 
 
 exports.getproductByCategory = async (req, res, next) => {
-const id = req.params.id;
+const name = req.params.name;
 try {
     const product = await pool.query(
     'SELECT * FROM products WHERE category = $1',
-    [id]
+    [name]
     );
     req.product = product.rows;
     return next();

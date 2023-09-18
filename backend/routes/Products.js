@@ -28,6 +28,6 @@ router.get('/allproducts', getAllProducts,read);
 // Create GET route to read a list oll categories
 router.get('/categories', getCategories,read);
 // Create GET route to read a list oll categories
-router.get('/categories/:id', getproductByCategory,read);
+router.get('/categories/:name', getproductByCategory,read);
 
 module.exports = router;

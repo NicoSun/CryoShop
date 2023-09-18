@@ -1,12 +1,14 @@
 // import { useSelector } from 'react-redux'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './account.css'
 import Login from '../components/Login.js';
 import SignUp from '../components/SignUp.js';
 import Settings from '../components/Settings.js';
+import { useSelector } from 'react-redux';
 
 function Account() {
-  // const cart = useSelector((state) => state.cart)
-  let loggedin = true
+  const userdata = useSelector(state => state.userGPT.userGPT);
+  let loggedin = userdata.loggedin;
 
   if (loggedin) {
     return (

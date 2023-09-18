@@ -2,22 +2,37 @@
 // not working yet
 
 import { createSlice } from '@reduxjs/toolkit';
+const initialState = {categories:[], category: 'none' , productList: []};
+
 
 const productSlice = createSlice({
   name: 'products',
-  initialState: [],
+  initialState,
   reducers: {
-    setProductData: (state, action) => {
-      return action.payload;
+    loadCategories: (state, action) => {
+      state.categories = action.payload;
     },
+    updateCategory: (state, action) => {
+      state.category = action.payload;
+    },
+    setProductData: (state, action) => {
+      state.productList = action.payload;
+    },
+    // final Reducer: Reset all keys to initial state
+    resetAllKeys: (state) => {
+      state.category = initialState.category;
+      state.productList = initialState.productList;
+      state.categories = initialState.categories;
+    },
+    
   },
 });
 
-const categorySlice = createSlice({
-  name: 'category',
+const orderSlice = createSlice({
+  name: 'orders',
   initialState: [],
   reducers: {
-    loadCategories: (state, action) => {
+    loadOrders: (state, action) => {
       return action.payload;
     },
   },
@@ -25,9 +40,9 @@ const categorySlice = createSlice({
 
 
 export const productReducer = productSlice.reducer;
-export const { setProductData } = productSlice.actions;
+export const {loadCategories, updateCategory,setProductData, resetAllKeys } = productSlice.actions;
 
-export const categoryReducer = categorySlice.reducer;
-export const { loadCategories } = categorySlice.actions;
+export const orderReducer = orderSlice.reducer;
+export const { loadOrders } = orderSlice.actions;
 
 export default productSlice.reducer;

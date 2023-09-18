@@ -1,11 +1,12 @@
+import './categories.css';
 import React, { useEffect } from 'react';
-
-import { loadCategories } from '../redux/productSlice';
+import { useNavigate } from "react-router-dom";
+import { loadCategories,updateCategory } from '../redux/productSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux'
 import {fetchData} from '../api/index.js';
 
-const fetchAndSetData = () => async (dispatch) => {
+const fetchCategories = () => async (dispatch) => {
   try {
       let endpoint = "Products/categories";
       const data = await fetchData(endpoint);
@@ -15,23 +16,34 @@ const fetchAndSetData = () => async (dispatch) => {
   }
   };
 
+  const handleInputChange = (dispatch,value,navigate) => {
+    try {
+      dispatch(updateCategory(value));
+      navigate(0);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 const Categories = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchAndSetData());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
-  const category = useSelector((state) => state.category)
+  const categories = useSelector((state) => state.products.categories);
 
     return (
       <div className="categories">
         <h4>Category</h4>
-        {category?.map((product) => (
-          <div key={product.id}>
-            <p>{product.category}</p>
-            </div>
+        <ul>
+        {categories?.map((category) => (
+            <li key={category.id} onClick={(e) =>{handleInputChange(dispatch,category.category,navigate)}}>{category.category}</li>
         ))}
+        </ul>
+        
       </div>
     );
   };

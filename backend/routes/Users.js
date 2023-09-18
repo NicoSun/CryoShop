@@ -30,7 +30,4 @@ router.post('/login', loginUser);
 router.get('/logout', logoutUser);
 router.get('/userprofile', userProfile);
 
-router.get('/cart');
-router.get('/checkout');
-
 module.exports = router;

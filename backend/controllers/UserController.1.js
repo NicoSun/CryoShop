@@ -1,9 +1,8 @@
 const formidable = require('formidable');
 const pool = require('../models/database');
-const { SignUpValidator ,LoginValidator} = require('../utils/index');
+const { UserValidator } = require('../utils/index');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require("bcrypt");
-const { body, validationResult } = require('express-validator');
 // const jwt = require('jsonwebtoken');
 // const secretKey = process.env.SECRET; // Replace with your own secret key
 
@@ -15,11 +14,11 @@ const finduser = async (username) => {
     return User.rows;
 }
 
-const checkUser = async (email, password) => {
+const checkUser = async (username, password) => {
   //... fetch user from a db
   const User = await pool.query(
-    'SELECT password FROM users WHERE email = $1',
-    [email]
+    'SELECT username, password FROM users WHERE username = $1',
+    [username]
     );
     // compare(plainPassword,hashedPassword)
   const match = await bcrypt.compare(password, User.rows[0].password);
@@ -32,8 +31,8 @@ exports.createUser = (req, res, next) => {
     form.parse(req, async (err, fields) => {
       const { email, username, password, address, payment,firstname,lastname} = fields;
       // check for all fields
-      if (SignUpValidator(fields)) {
-        return res.status(400).json(SignUpValidator(fields));
+      if (UserValidator(fields)) {
+        return res.status(400).json(UserValidator(fields));
       }
       if (await finduser(username).length > 0){
         res.send("Username already exists!");
@@ -135,18 +134,15 @@ exports.loginUser = async (req, res, next) => {
   const form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.parse(req, async (err, fields) => {
-      const { email, password} = fields;
-
-      const passwordCheck = await checkUser(email,password);
-
-      if (passwordCheck) {
+      const { email, username, password} = fields;
+      if (username && password) {
         const User = await pool.query(
-          `SELECT id, email, username, firstname, lastname, address, payment FROM users WHERE email = $1`,
-          [email],
+          `SELECT id, email, username, firstname, lastname, address, payment FROM users WHERE username = $1 AND password = $2`,
+          [username, password],
           );
           // console.log(User.rows)
           const Userdata = User.rows[0];
-          if (User.rows.length > 0){
+          if (User.rows){
             Userdata.loggedin = true;
             res.json(Userdata);
 

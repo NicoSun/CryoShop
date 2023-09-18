@@ -15,16 +15,14 @@ exports.placeOrder = (req, res) => {
       }
       try {
         const newID = uuidv4();
-        const status = "received";
-        const complete = false;
         const now = new Date()
 
         const newOrder = await pool.query(
-          'INSERT INTO orders (id, user_id, product_id, product_quantity, product_price, order_address, status, complete, ship_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-          [newID,user_id, product_id, product_quantity, product_price, order_address, status, complete,now]
+          'INSERT INTO orders (id, user_id, product_id, product_quantity, product_price, order_address, ship_date) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+          [newID,user_id, product_id, product_quantity, product_price, order_address,now]
         );
         // await pool.query('UPDATE orders SET ship_date = $1 WHERE id = $2',[now,newID]);
-        return res.status(201).send(`User added: ${newOrder.rowCount}`);
+        return res.status(201).send(`Order added: ${newOrder.rowCount}`);
       } catch (error) {
         return res.status(400).json({
           error,
@@ -46,6 +44,27 @@ exports.getAllOrders = async (req, res, next) => {
     });
 }
 };
+
+exports.getOrderByUserID = async (req, res, next) => {
+  const userID = req.params.id;
+  try {
+    const order = await pool.query(
+      'SELECT * FROM orders WHERE user_id = $1',
+      [userID]
+      );
+      req.order = order.rows;
+      if (req.order.length > 0){
+        return next();
+      } else {
+        res.status(400);
+        res.send("No orders found for user")
+      } 
+  } catch (err) {
+      return res.status(400).json({
+      error: err,
+      });
+  }
+  };
 
 exports.getOrderById = async (req, res, next) => {
 const id = req.params.id;

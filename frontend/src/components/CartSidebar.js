@@ -2,8 +2,11 @@ import './cart_sidebar.css'
 import Total from './Total'
 import CartItem from './CartItem'
 import { useSelector } from 'react-redux'
+import {Link,useNavigate} from 'react-router-dom'
+
 
 function CartSidebar() {
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.cart)
 
   return (
@@ -22,7 +25,7 @@ function CartSidebar() {
       />
         ))}
     </div>
-
+      <button><Link to="/cart" className="nav-link">Checkout</Link></button>
       <div className="cart__sum">
         <Total/>
       </div>

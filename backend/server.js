@@ -19,7 +19,7 @@ require('dotenv').config();
 
 // // import routes
 const ProductRoutes = require('./routes/Products');
-// const StoreRoutes = require('./routes/Store');
+const StoreRoutes = require('./routes/Store');
 const UserRoutes = require('./routes/Users');
 const OrderRoutes = require('./routes/Orders');
 
@@ -51,7 +51,7 @@ app.use((error, request, response, next) => {
 // session cookie with timeout
 app.use(
   session({
-    secret: "gu$035cJ£cx9*J90mn^V87t6bz",
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
     cookie: {
@@ -75,7 +75,7 @@ app.use(cors());
 
 // route middlewares
 app.use('/api/Products', ProductRoutes);
-// app.use('/api/Store', StoreRoutes);
+app.use('/api/Store', StoreRoutes);
 app.use('/api/Users', UserRoutes);
 app.use('/api/Orders', OrderRoutes);
 

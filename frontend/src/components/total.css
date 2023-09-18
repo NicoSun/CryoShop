@@ -13,3 +13,8 @@
   background-color: unset;
   border: 1px solid #FFD814;
 }
+
+.shipping {
+  color: green;
+  font-weight: bold;
+}

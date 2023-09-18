@@ -11,7 +11,7 @@ function CartItem({id, image, title, desc, price, quantity=0}) {
       <div className="cartItem__info">
         <p className="cartItem__title">{title}</p>
         <p className="cartItem__price">
-          <small>$</small>
+          <small>£</small>
           <strong>{price}</strong>
         </p>
         <div className='cartItem__incrDec'>
