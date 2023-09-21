@@ -8,6 +8,7 @@ function SignUp() {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('');
   const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('');
 
   const dispatch = useDispatch();
 
@@ -20,15 +21,19 @@ function SignUp() {
     bodyFormData.append('password', password);
 
     let response = await postRequest(`Users/create`,bodyFormData);
-    for (const [key, value] of Object.entries(response.data)) {
-      dispatch(updateProperty({key,value}));
-    }
-    console.log(response);
-
-    // Reset the form fields
-    // setUsername('');
-    // setPassword('');
-    // setEmail('');
+    if (response === 406) {
+      setStatus('Not a valid email!');
+    } else if (response === 409) {
+      setStatus("Email already in use!");
+    } else {
+      for (const [key, value] of Object.entries(response.data)) {
+        dispatch(updateProperty({key,value}));
+      }
+      // Reset the form fields
+      // setUsername('');
+      // setPassword('');
+      // setEmail('');
+    } 
   };
 
   return (
@@ -75,12 +80,13 @@ function SignUp() {
             required
           />
         </div>
+        <button type="submit">Sign Up</button>
         {password !== password2 ? (
           <p>Passwords don't match</p>
         ) : (
           <div></div>
         )}
-        <button type="submit">Sign Up</button>
+        {status ? (<p>{status}</p>) : (<div></div>)}
       </form>
     </div>
   );

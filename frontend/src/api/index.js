@@ -9,7 +9,8 @@ export const postRequest = async (endpoint,data) => {
         return response;
       }).catch(err => {
         console.log("API Post Error");
-        console.log(err);
+        // console.log(err);
+        return err.response.status;
     })
     return response2;;
 };
@@ -22,7 +23,8 @@ export const putRequest = async (endpoint,data) => {
         return response;
       }).catch(err => {
         console.log("API Put Error");
-        console.log(err);
+        // console.log(err);
+        return err.response.status;
     })
     return response2;;
 };

@@ -57,26 +57,19 @@ exports.SignUpValidator = (fields) => {
   return null;
 };
 
-exports.LoginValidator = (fields) => {
-  const {username , password} = fields;
-  if (/^.+@.+\..+$/.test(username)) {
-    return true;
-  } else {
-    return false;
-  }
-  console.log(errors);
+exports.EmailValidator = (email) => {
+  // Check for the "@" character
+  const atIndex = email.indexOf('@');
+  
+  // Check for the "." character
+  const dotIndex = email.lastIndexOf('.');
 
-  if (!username || !password ) {
-    const emptyFields = [];
-    Object.keys(fields).forEach((field) => {
-      if (fields[field].length <= 0) {
-        emptyFields.push(field);
-      }
-    });
+  // Ensure "@" comes before "."
+  if(atIndex !== -1 && dotIndex > atIndex){
+    return null;
+  } else {
     return {
-      error: 'Account creation Error. All fields are required',
-      emptyFields,
+      error: 'Not an email address!'
     };
-  }
-  return null;
-};
+  };
+}

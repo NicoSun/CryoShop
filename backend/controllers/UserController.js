@@ -1,29 +1,42 @@
 const formidable = require('formidable');
 const pool = require('../models/database');
-const { SignUpValidator ,LoginValidator} = require('../utils/index');
+const { SignUpValidator ,EmailValidator} = require('../utils/index');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require("bcrypt");
-const { body, validationResult } = require('express-validator');
+// const { body, validationResult } = require('express-validator');
 // const jwt = require('jsonwebtoken');
 // const secretKey = process.env.SECRET; // Replace with your own secret key
 
-const finduser = async (username) => {
+const findUser = async (username) => {
   const User = await pool.query(
     'SELECT id, email, username, firstname, lastname, address, payment FROM users WHERE username = $1',
     [username]
     );
+    console.log(User.rows);
+    return User.rows;
+}
+const findEmail = async (email) => {
+  const User = await pool.query(
+    'SELECT id, email, username, firstname, lastname, address, payment FROM users WHERE email = $1',
+    [email]
+    );
+    console.log(User.rows);
     return User.rows;
 }
 
 const checkUser = async (email, password) => {
   //... fetch user from a db
-  const User = await pool.query(
-    'SELECT password FROM users WHERE email = $1',
-    [email]
-    );
-    // compare(plainPassword,hashedPassword)
-  const match = await bcrypt.compare(password, User.rows[0].password);
-  return match
+  try {
+    const User = await pool.query(
+      'SELECT password FROM users WHERE email = $1',
+      [email]
+      );
+      // compare(plainPassword,hashedPassword)
+    const match = await bcrypt.compare(password, User.rows[0].password);
+    return match
+  } catch (error) {
+    return  false;
+  }
 }
 
 exports.createUser = (req, res, next) => {
@@ -35,10 +48,12 @@ exports.createUser = (req, res, next) => {
       if (SignUpValidator(fields)) {
         return res.status(400).json(SignUpValidator(fields));
       }
-      if (await finduser(username).length > 0){
-        res.send("Username already exists!");
-        res.end();
-        return next();
+      if(EmailValidator(email)){
+        return res.status(406).send("invalid email");
+      }
+      const existing = await findEmail(email);
+      if (existing.length > 0){
+        return res.status(409).send("Email already in use!");
       }
       try {
         const newID = uuidv4();
@@ -54,7 +69,6 @@ exports.createUser = (req, res, next) => {
           let Userdata = await finduser(username);
           Userdata = Userdata[0];
           Userdata.loggedin = true;
-          console.log(Userdata);
           res.json(Userdata);
         }
       } catch (error) {
@@ -137,13 +151,21 @@ exports.loginUser = async (req, res, next) => {
     form.parse(req, async (err, fields) => {
       const { email, password} = fields;
 
+      if(EmailValidator(email)){
+        return res.status(406).send("invalid email");
+      }
+      if (!email && !password){
+        return res.status(401).send("invalid authentication");
+      }
+
       const passwordCheck = await checkUser(email,password);
+      
+      if(!passwordCheck){
+        return res.status(401).send("invalid authentication");
+      }
 
       if (passwordCheck) {
-        const User = await pool.query(
-          `SELECT id, email, username, firstname, lastname, address, payment FROM users WHERE email = $1`,
-          [email],
-          );
+        const User = await findEmail(email);
           // console.log(User.rows)
           const Userdata = User.rows[0];
           if (User.rows.length > 0){
@@ -156,6 +178,7 @@ exports.loginUser = async (req, res, next) => {
             // res.json({ token });
           } else {
             res.send("Incorrect Username and/or Password!");
+            return res.status(401);
           }
           return next();
       } else {
