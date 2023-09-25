@@ -35,30 +35,30 @@ function Login() {
 
   return (
     <div className="user-account">
-      <h1>Login</h1>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">email:</label>
           <input
-            type="text"
+            type="email"
             id="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
 
-        <button type="submit">Login</button>
+        <button className='buttonstyle' type="submit">Login</button>
         {status ? (<p>{status}</p>) : (<div></div>)}
       </form>
     </div>

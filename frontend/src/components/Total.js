@@ -17,7 +17,7 @@ function Total() {
  
   return (
     <div className="total">
-      <h4>ORDER SUMMARY</h4>
+      <h4>Order Summary</h4>
       {cart.length === 0 ? (
         <p>Nothing in the basket yet.</p>
       ) : (

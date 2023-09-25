@@ -12,13 +12,13 @@ function Home() {
       <div className="row">
       </div>
         <div className="row">
-        <div className="col-lg-2 categories">
+        <div className="col-xs-12 col-lg-2 categories">
         <Categories />
         </div>
-        <div className="col-lg-7 product_grid">
+        <div className="col-xs-12 col-lg-10  col-xl-7 product_grid">
           <Products />
         </div>
-        <div className="col-lg-3 sidebar">
+        <div className="col-xl-3 d-none d-xl-block sidebar">
         <CartSidebar />
         </div>
         </div>

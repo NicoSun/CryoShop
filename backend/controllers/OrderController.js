@@ -22,7 +22,7 @@ exports.placeOrder = (req, res) => {
           [newID,user_id, product_id, product_quantity, product_price, order_address,now]
         );
         // await pool.query('UPDATE orders SET ship_date = $1 WHERE id = $2',[now,newID]);
-        return res.status(201).send(`Order added: ${newOrder.rowCount}`);
+        return res.status(201).send(`Success: Your Order ID is: ${newID}`);
       } catch (error) {
         return res.status(400).json({
           error,
@@ -74,7 +74,12 @@ try {
     [id]
     );
     req.order = order.rows;
-    return next();
+    if (req.order.length > 0){
+      return next();
+    } else {
+      res.status(400);
+      res.send("No orders found for user")
+    } 
 } catch (err) {
     return res.status(400).json({
     error: err,

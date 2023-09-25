@@ -19,7 +19,7 @@ export const postRequest = async (endpoint,data) => {
 export const putRequest = async (endpoint,data) => {
     let url = `${API_URL}/api/${endpoint}`;
     const response2 = await axios.put(url,data).then((response) => {
-        console.log(response);
+        // console.log(response);
         return response;
       }).catch(err => {
         console.log("API Put Error");
@@ -31,17 +31,26 @@ export const putRequest = async (endpoint,data) => {
 
 export const getRequest = (endpoint) => {
     let url = `${API_URL}/api/${endpoint}`;
-    let response = axios.get(url);
-    return response;
-    };
+    let response2 = axios.get(url).then((response) => {
+        // console.log(response);
+        return response;
+      }).catch(err => {
+        console.log("API Get Error");
+        return err.response.status;
+    })
+    return response2;;;
+};
+
 
 export const fetchData = async (endpoint) => {
-    try {
-        let url = `${API_URL}/api/${endpoint}`;
-        const response = await axios.get(url);
-        return response.data; // Assuming your data is an array of items
-    } catch (error) {
-        throw error;
-    }
-    };
+    let url = `${API_URL}/api/${endpoint}`;
+    const response2 = await axios.get(url).then((response) => {
+        return response.data;
+        }).catch(err => {
+        console.log("API Get Error");
+        return err.response.status;
+    })
+    return response2;
+};
+   
     

@@ -4,13 +4,17 @@ import CartItem from '../components/CartItem'
 import { useSelector,useDispatch } from 'react-redux'
 import {postRequest} from '../api/index.js';
 import {resetAllKeys} from '../redux/cartSlice'
+import React, { useState } from 'react';
+import {Link} from 'react-router-dom'
 
 function Cart() {
   const dispatch = useDispatch();
+  const [status, setStatus] = useState([]);
   const cart = useSelector((state) => state.cart.cart);
   let userdata = useSelector(state => state.userGPT.userGPT);
+  let loggedin = userdata.loggedin;
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const quantities = [];
@@ -30,15 +34,17 @@ function Cart() {
     bodyFormData.append('product_quantity', quantities);
     bodyFormData.append('product_price', prices);
     
-    let response = postRequest(`Orders/place`,bodyFormData);
+    let response = await postRequest(`Orders/place`,bodyFormData);
     console.log(response);
     dispatch(resetAllKeys());
+    setStatus(response.data);
 
   };
 
   return (
-    <div className="cart">
-      <div className="cart__left">
+    <div className="cart_page">
+      <div className="cart">
+      <div className="cart_list">
   <div>
     <h3>Shopping Cart</h3>
     {cart?.map((item) => (
@@ -54,16 +60,19 @@ function Cart() {
         ))}
       </div>
     </div>
+    </div>
 
-      <div className="cart__right">
+      <div className="cart_total">
         <Total/>
       </div>
       <form onSubmit={handleSubmit}>
-      <button type="submit">Place Order</button>
+      {loggedin ? (<button className='buttonstyle placebutton' type="submit">Place Order</button>) :
+       (<Link className='linkbutton' to="/account">Please log in to place an Order!</Link>)}
       </form>
-      
-
+      {status ? (<p>{status}</p>) : (<div></div>)}
+    
     </div>
+    
   )
 }
 

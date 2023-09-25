@@ -1,62 +1,44 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './orders.css'
-import {getRequest,fetchData} from '../api/index.js';
-import React, { useState, useEffect } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
+import {getRequest} from '../api/index.js';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import OrderUser from '../components/OrdersUser';
 import OrderList from '../components/OrderList';
 
 
-
 function Orders() {
+  const [orderID, setOrderID] = useState('');
+  const [orderData, setOrderData] = useState([]);
+  const [status, setStatus] = useState('');
   const userdata = useSelector(state => state.userGPT.userGPT);
-  console.log(userdata);
+  // console.log(userdata);
   let loggedin = userdata.loggedin;
-
-  const [orders, setOrders] = useState([]);
-  let userID = userdata.id;
-  let endpoint = `Orders/user/${userID}`;
-
-  useEffect(() => {
-    // Fetch products from the backend
-    getRequest(endpoint) // Adjust the URL as needed
-      .then((response) => {
-        if(response.data.length > 0) {
-          setOrders(response.data);
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching products:', error);
-      });
-  }, []);
+  let response = '';
   
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const orderID = 'ca815b4d-d51e-463b-a2e3-1a9b26be7191';
-
-    var bodyFormData = new FormData();
-    // bodyFormData.append('orderid', userdata.orderid);
-    // bodyFormData.append('email', userdata.email);
-
-
-    let response = fetchData(`Orders/${orderID}`,bodyFormData);
+    // const orderID = '0d726ccd-a411-46c9-97d1-537ecfa96c34';
+    response = await getRequest(`Orders/${orderID}`);
     console.log(response);
-
+    if (response === 400) {
+      setStatus('Not a valid orderID!');
+    } else {
+      setOrderData(response.data);
+    }
   };
 
-  
-  console.log(orders);
   if (loggedin) {
-    if (orders.length === 0){
-      return (
-        <p>No Orders found!</p>
-      )
-    } else {
-      return (
-        <div className="cart">
-          <h3>Order List</h3>
-          <div className="cart__left">
-          {orders?.map((order) => (
+    return (
+      <OrderUser />
+    )
+    }
+    else {
+    return (
+      <div className="container">
+        <div className="row">
+        <div className="col-lg-6">
+        {orderData?.map((order) => (
             <div key={order.id}>
               <OrderList 
               id={order.id}
@@ -68,43 +50,22 @@ function Orders() {
               />
               </div>
           ))}
-    
-    </div>
-
-      <div className="cart__right">
-      <h4>Options</h4>
-      </div>
-    </div>
-    )
-  }} else {
-    return (
-      <div className="container">
-        <div className="row">
-        <div className="col-lg-6">
+        {/* {orderData ? (<p>{response}</p>) : (<p>{orderData}</p>)} */}
         </div>
         <div className="col-lg-6">
         <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="text"
-            id="email"
-            value=''
-            // onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
         <div>
           <label htmlFor="id">Order Number:</label>
           <input
             type="text"
             id="orderID"
-            value=''
-            // onChange={(e) => setPassword(e.target.value)}
+            value={orderID}
+            onChange={(e) => setOrderID(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Save</button>
+        <button className='buttonstyle' type="submit">Submit</button>
+        {status ? (<p>{status}</p>) : (<div></div>)}
       </form>
         </div>
         </div>

@@ -1,9 +1,8 @@
+.categories {
+    text-align: center;
+}
+
 .categories li {
     text-decoration: none;
     list-style-type: none;
-    margin-left: 2em;
-}
-
-h4{
-    text-align: center;
 }

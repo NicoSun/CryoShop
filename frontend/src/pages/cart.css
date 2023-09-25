@@ -1,3 +1,15 @@
+body {
+  background-color: rgb(6, 93, 151);
+}
+
+.cart_page{
+  max-width: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
 .cart{
   display: flex;
   margin: 30px auto;
@@ -7,22 +19,40 @@
   flex: 1;
 }
 
-.cart__left{
+.cart_list{
   padding: 20px;
   width: 100%;
-  background-color: white;
+  background-color: rgb(200, 255, 255);
+  border-radius: .5em;
 }
 
-.cart__left h3{
+.cart_list h3{
   font-size: 1em;
   font-weight: 450;
   padding-bottom: 20px;
   border-bottom: 1px solid gainsboro;
 }
 
-.cart__title{
-  margin-right: 10px;
-  padding: 10px;
-  border-bottom: 1px solid lightgray;
+.placebutton {
+  margin: 1em;
+  font-weight: bold;
+  font-size: 1.5em;
+  padding: .75em;
+  border-radius: .5em;
+  color: rgb(8, 70, 19);
+  border: none;
+}
 
+.linkbutton {
+  margin: 1em;
+text-decoration: none;
+padding: .5em;
+border-radius: .5em;
+background-color: rgb(255, 255, 255);
+color: black;
+border: none;
+}
+
+.placebutton:hover,.linkbutton:hover {
+  background-color: #98c2f0;
 }

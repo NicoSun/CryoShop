@@ -37,7 +37,7 @@ const Categories = () => {
 
     return (
       <div className="categories">
-        <h4>Category</h4>
+        <h4>Categories</h4>
         <ul>
         {categories?.map((category) => (
             <li key={category.id} onClick={(e) =>{handleInputChange(dispatch,category.category,navigate)}}>{category.category}</li>

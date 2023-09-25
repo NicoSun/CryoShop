@@ -29,16 +29,16 @@ function Settings() {
     bodyFormData.append('payment', userdata.payment);
 
     let response = putRequest(`Users/update`,bodyFormData);
-    console.log(response);
+    // console.log(response);
 
   };
 
     return (
-      <div className="user-account">
-        <h1>Settings</h1>
+      <div className="flex-container">
+        <div className="user-account">
+        <h2>Settings</h2>
         <form onSubmit={handleSubmit}>
-        <div>
-            <label htmlFor="firstname">Firstname:</label>
+            <label for="firstname">Firstname:</label>
             <input
               type="text"
               id="firstname"
@@ -46,9 +46,7 @@ function Settings() {
               onChange={(e) => handleInputChange(dispatch,"firstname",e.target.value)}
               required
             />
-          </div>
-          <div>
-            <label htmlFor="lastname">Lastname:</label>
+            <label for="lastname">Lastname:</label>
             <input
               type="text"
               id="lastname"
@@ -56,9 +54,7 @@ function Settings() {
               onChange={(e) => handleInputChange(dispatch,"lastname",e.target.value)}
               required
             />
-          </div>
-        <div>
-            <label htmlFor="email">Email:</label>
+            <label for="email">Email:</label>
             <input
               type="text"
               id="email"
@@ -66,9 +62,7 @@ function Settings() {
               onChange={(e) => handleInputChange(dispatch,"email",e.target.value)}
               required
             />
-          </div>
-          <div>
-            <label htmlFor="username">Username:</label>
+            <label for="username">Username:</label>
             <input
               type="text"
               id="username"
@@ -76,9 +70,8 @@ function Settings() {
               onChange={(e) => handleInputChange(dispatch,"username",e.target.value)}
               required
             />
-          </div>
-          <div>
-            <label htmlFor="address">Address:</label>
+
+            <label for="address">Address:</label>
             <input
               type="text"
               id="address"
@@ -86,9 +79,7 @@ function Settings() {
               onChange={(e) => handleInputChange(dispatch,"address",e.target.value)}
               required
             />
-          </div>
-          <div>
-            <label htmlFor="payment">Payment:</label>
+            <label for="payment">Payment:</label>
             <input
               type="text"
               id="payment"
@@ -96,14 +87,10 @@ function Settings() {
               onChange={(e) => handleInputChange(dispatch,"payment",e.target.value)}
               required
             />
-          </div>
-          <button type="submit">Save</button>
+          <button className='buttonstyle savebutton' type="submit">Save</button>
         </form>
-  
-  
-        <div>
-        {/* <button>Change Password</button> */}
-        </div>
+        <button className='buttonstyle savebutton'>Change Password</button>
+      </div>
       </div>
     );
 

@@ -6,12 +6,11 @@ import {Link,useNavigate} from 'react-router-dom'
 
 
 function CartSidebar() {
-  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.cart)
 
   return (
     <div className="cart">
-      <div className="cart__list">
+    <div className="cart_list">
     <h4>Shopping Cart</h4>
     {cart?.map((item) => (
       <CartItem
@@ -25,10 +24,11 @@ function CartSidebar() {
       />
         ))}
     </div>
-      <button><Link to="/cart" className="nav-link">Checkout</Link></button>
       <div className="cart__sum">
         <Total/>
       </div>
+      
+      <button id='checkout' className='buttonstyle'><Link to="/cart" className="nav-link">Checkout</Link></button>
 
     </div>
   )

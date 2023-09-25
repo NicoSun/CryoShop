@@ -2,13 +2,8 @@ body {
   background-color: rgb(6, 93, 151);
 }
 
-
 .product_grid{
   flex-wrap: wrap;
-}
-
-.h4 {
-  text-align: left;
 }
 
 .container {
@@ -16,3 +11,7 @@ body {
   padding: 0 !important;
 }
 
+.buttonstyle {
+  border-radius: .5em;
+  background-color: rgb(255, 255, 255);
+}

@@ -30,57 +30,57 @@ function SignUp() {
         dispatch(updateProperty({key,value}));
       }
       // Reset the form fields
-      // setUsername('');
-      // setPassword('');
-      // setEmail('');
+      setUsername('');
+      setPassword('');
+      setEmail('');
     } 
   };
 
   return (
     <div className="user-account">
-      <h1>SignUp</h1>
+      <h2>SignUp</h2>
       <form onSubmit={handleSubmit}>
       <div>
-          <label htmlFor="email">Email:</label>
           <input
-            type="text"
+            type="email"
             id="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div>
-          <label htmlFor="username">Username:</label>
           <input
             type="text"
             id="username"
+            placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
         <div>
-          <label htmlFor="password">Confirm Password:</label>
           <input
             type="password"
             id="password"
+            placeholder="Confirm Password"
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Sign Up</button>
+        <button className='buttonstyle' type="submit">Sign Up</button>
         {password !== password2 ? (
           <p>Passwords don't match</p>
         ) : (

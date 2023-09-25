@@ -1,7 +1,8 @@
 .total{
   padding: 1em;
-  background: white;
   border-radius: 3px;
+  background-color: rgb(200, 255, 255);
+  border-radius: .5em;
 }
 
 .total__p{
@@ -17,4 +18,10 @@
 .shipping {
   color: green;
   font-weight: bold;
+}
+
+.total h4 {
+  font-size: 1em;
+  font-weight: 450;
+  text-align: left;
 }

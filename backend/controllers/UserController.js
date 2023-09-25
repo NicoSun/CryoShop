@@ -12,7 +12,6 @@ const findUser = async (username) => {
     'SELECT id, email, username, firstname, lastname, address, payment FROM users WHERE username = $1',
     [username]
     );
-    console.log(User.rows);
     return User.rows;
 }
 const findEmail = async (email) => {
@@ -20,7 +19,6 @@ const findEmail = async (email) => {
     'SELECT id, email, username, firstname, lastname, address, payment FROM users WHERE email = $1',
     [email]
     );
-    console.log(User.rows);
     return User.rows;
 }
 
@@ -167,8 +165,8 @@ exports.loginUser = async (req, res, next) => {
       if (passwordCheck) {
         const User = await findEmail(email);
           // console.log(User.rows)
-          const Userdata = User.rows[0];
-          if (User.rows.length > 0){
+          const Userdata = User[0];
+          if (User.length > 0){
             Userdata.loggedin = true;
             res.json(Userdata);
 

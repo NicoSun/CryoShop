@@ -19,7 +19,6 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userdata = useSelector(state => state.userGPT.userGPT);
-    // console.log(userdata);
 
     
     const handleInputChange = (dispatch,navigate) => {
@@ -46,10 +45,7 @@ const Navbar = () => {
                         <p>{userdata.username}</p>
                         {userdata.loggedin ? (
                           <span onClick={(e) =>{logout(dispatch,navigate)}}>Log Out!</span>
-                        ) : (
-                          <div>
-                            </div>
-                )}
+                        ) : (<div></div>)}
               </div>
                   </nav>
               
