@@ -64,7 +64,7 @@ exports.createUser = (req, res, next) => {
 
         if (newUser.rows){
           // const Userdata = {username: username, email:email};
-          let Userdata = await finduser(username);
+          let Userdata = await findUser(username);
           Userdata = Userdata[0];
           Userdata.loggedin = true;
           res.json(Userdata);
@@ -109,11 +109,19 @@ try {
 
 
 exports.updateUser = async (req, res, next) => {
-  console.log("User Update Start!")
+  // console.log("User Update Start!")
   const form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.parse(req, async (err, fields) => {
-      console.log(fields)
+    const { id,email, username, address, payment,firstname,lastname} = fields;
+
+    if(EmailValidator(email)){
+      return res.status(406).send("invalid email");
+    }
+    const existing = await findEmail(email);
+    if (existing.length > 0  && existing.rows[0].email != email){
+      return res.status(409).send("Email already in use!");
+    }
 
       try {
         const newUser = await pool.query(
@@ -128,6 +136,29 @@ exports.updateUser = async (req, res, next) => {
       }
     });
   };
+
+  exports.updatePassword = async (req, res, next) => {
+    console.log("User Password Start!")
+    const form = new formidable.IncomingForm();
+      form.keepExtensions = true;
+      form.parse(req, async (err, fields) => {
+        const { id, password} = fields;
+  
+        try {
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(password, salt);
+          const newUser = await pool.query(
+            'UPDATE users SET password = $1 WHERE id = $2',
+            [hashedPassword,id]
+          );
+          return res.status(201).send(`User updated: ${newUser.rowCount}`);
+        } catch (error) {
+          return res.status(400).json({
+            error,
+          });
+        }
+      });
+    };
 
 
 exports.deleteUser = async (req, res) => {

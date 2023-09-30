@@ -20,11 +20,14 @@ function SignUp() {
     bodyFormData.append('username', username);
     bodyFormData.append('password', password);
 
-    let response = await postRequest(`Users/create`,bodyFormData);
+    if (password.length > 7 && password === password2){
+      let response = await postRequest(`Users/create`,bodyFormData);
     if (response === 406) {
       setStatus('Not a valid email!');
     } else if (response === 409) {
       setStatus("Email already in use!");
+    } else if (response === 400) {
+      setStatus("An Error has occured");
     } else {
       for (const [key, value] of Object.entries(response.data)) {
         dispatch(updateProperty({key,value}));
@@ -33,6 +36,7 @@ function SignUp() {
       setUsername('');
       setPassword('');
       setEmail('');
+    }
     } 
   };
 
@@ -83,9 +87,10 @@ function SignUp() {
         <button className='buttonstyle' type="submit">Sign Up</button>
         {password !== password2 ? (
           <p>Passwords don't match</p>
-        ) : (
-          <div></div>
-        )}
+        ) : (<div></div>)}
+        {password.length < 8 ? (
+          <p>Password is too short</p>
+        ) : (<div></div>)}
         {status ? (<p>{status}</p>) : (<div></div>)}
       </form>
     </div>

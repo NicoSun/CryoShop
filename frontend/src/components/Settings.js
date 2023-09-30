@@ -1,7 +1,8 @@
-// import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import { updateProperty } from '../redux/userslice.js';
 import {putRequest} from '../api/index.js';
+import SettingsAdv from './SettingsAdv.js'
 
   const handleInputChange = (dispatch,key,value) => {
     try {
@@ -15,6 +16,8 @@ import {putRequest} from '../api/index.js';
 function Settings() {
   const dispatch = useDispatch();
   let userdata = useSelector(state => state.userGPT.userGPT);
+  const [status, setStatus] = useState('');
+  // const [advSettings, setAdvSettings] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,7 +32,13 @@ function Settings() {
     bodyFormData.append('payment', userdata.payment);
 
     let response = putRequest(`Users/update`,bodyFormData);
-    // console.log(response);
+    if (response.status === 201) {
+      setStatus('success');
+    }  else if (response === 409) {
+      setStatus("Email already in use!");
+    } else if (response === 406) {
+      setStatus("Invalid Email");
+    } 
 
   };
 
@@ -56,7 +65,7 @@ function Settings() {
             />
             <label for="email">Email:</label>
             <input
-              type="text"
+              type="email"
               id="email"
               value={userdata.email}
               onChange={(e) => handleInputChange(dispatch,"email",e.target.value)}
@@ -87,9 +96,13 @@ function Settings() {
               onChange={(e) => handleInputChange(dispatch,"payment",e.target.value)}
               required
             />
-          <button className='buttonstyle savebutton' type="submit">Save</button>
+          <button className='buttonstyle savebutton' type="submit">Save User details</button>
+          {status ? (<p>{status}</p>) : (<div></div>)}
         </form>
-        <button className='buttonstyle savebutton'>Change Password</button>
+
+        <SettingsAdv 
+        id={userdata.id}
+        />
       </div>
       </div>
     );

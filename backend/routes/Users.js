@@ -9,6 +9,7 @@ const {
   getUserByName,
   getAllUsers,
   updateUser,
+  updatePassword,
   loginUser,
   logoutUser,
   userProfile,
@@ -21,6 +22,8 @@ router.post('/create', createUser);
 router.get('/info/:name', getUserByName, read);
 // Create PUT route to update an User
 router.put('/update', updateUser);
+// Create PUT route to update an User Password
+router.put('/update/password', updatePassword);
 // Create DELETE route to remove a User
 router.delete('/get/:id', deleteUser);
 // Create GET route to read a list oll Users
