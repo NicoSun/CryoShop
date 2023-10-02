@@ -1,8 +1,8 @@
-import './cart_sidebar.css'
+import './cartSidebar.css'
 import Total from './Total'
 import CartItem from './CartItem'
 import { useSelector } from 'react-redux'
-import {Link,useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 
 function CartSidebar() {

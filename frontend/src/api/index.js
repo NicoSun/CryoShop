@@ -15,6 +15,19 @@ export const postRequest = async (endpoint,data) => {
     return response2;;
 };
 
+export const deleteRequest = async (endpoint,data) => {
+    let url = `${API_URL}/api/${endpoint}`;
+    const response2 = await axios.delete(url,data).then((response) => {
+        // console.log(response);
+        return response;
+      }).catch(err => {
+        console.log("API Delete Error");
+        // console.log(err);
+        return err.response.status;
+    })
+    return response2;;
+};
+
 
 export const putRequest = async (endpoint,data) => {
     let url = `${API_URL}/api/${endpoint}`;

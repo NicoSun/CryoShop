@@ -138,7 +138,6 @@ exports.updateUser = async (req, res, next) => {
   };
 
   exports.updatePassword = async (req, res, next) => {
-    console.log("User Password Start!")
     const form = new formidable.IncomingForm();
       form.keepExtensions = true;
       form.parse(req, async (err, fields) => {
@@ -162,15 +161,25 @@ exports.updateUser = async (req, res, next) => {
 
 
 exports.deleteUser = async (req, res) => {
-    const id = req.params.id;
+  const form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.parse(req, async (err, fields) => {
+      const { id, email, password} = fields;
+
+      const passwordCheck = await checkUser(email,password);
+      if(!passwordCheck){
+        return res.status(401).send("invalid authentication");
+      }
     try {
-      await pool.query('DELETE FROM users WHERE id = $1', [id]);
+      const oldUser = await pool.query('DELETE FROM users WHERE id = $1', [id]);
       return res.status(200).send(`User deleted with ID: ${id}`);
     } catch (error) {
+      console.log(error);
       return res.status(400).json({
         error,
       });
     }
+  });
   };
 
 // complete after data security integration

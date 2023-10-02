@@ -42,8 +42,20 @@ function Settings() {
 
   };
 
-    return (
-      <div className="flex-container">
+    
+      if (userdata.advSetting) {
+        return (
+        <SettingsAdv 
+        id={userdata.id}
+        />
+        )
+      } else {
+        return (
+          <div className="container">
+            <button className='buttonstyle savebutton settingswitcher' onClick={(e) => handleInputChange(dispatch,'advSetting',true)}>Advanced Settings</button>
+            <div className="row">
+         <div className="col-lg-6">
+         <div className="flex-container">
         <div className="user-account">
         <h2>Settings</h2>
         <form onSubmit={handleSubmit}>
@@ -99,13 +111,25 @@ function Settings() {
           <button className='buttonstyle savebutton' type="submit">Save User details</button>
           {status ? (<p>{status}</p>) : (<div></div>)}
         </form>
+      </div>
+      </div>
+      </div>
+      <div className="col-lg-6 contact-options">
+         <h2>Contact Options</h2>
+          <label for="pet-select">Newsletter frequency:</label>
 
-        <SettingsAdv 
-        id={userdata.id}
-        />
-      </div>
-      </div>
-    );
+          <select name="newsletter" id="newsletter">
+            <option value="never">-Please choose an option-</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+         </div>
+         </div>
+         </div>
+          
+        )
+      };
 
 }
 

@@ -12,25 +12,7 @@ function Account() {
 
   if (loggedin) {
     return (
-      <div className="container">
-        <h1>Account Page</h1>
-         <div className="row">
-         <div className="col-lg-6">
          <Settings />
-         </div>
-         <div className="col-lg-6 contact-options">
-         <h2>Contact Options</h2>
-          <label for="pet-select">Newsletter frequency:</label>
-
-          <select name="newsletter" id="newsletter">
-            <option value="never">-Please choose an option-</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-          </select>
-         </div>
-      </div>
-    </div>
     )
   } else {
     return (

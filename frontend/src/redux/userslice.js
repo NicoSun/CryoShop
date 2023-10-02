@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Initial state
 const initialState = {
-userGPT: {id:'000',firstname:'Firstname',lastname:'Lastname',email:'email@liame.org',username:'Guest',address:'Moon',payment:'Spacebucks',loggedin: false},
+userGPT: {id:'000',firstname:'Firstname',lastname:'Lastname',email:'email@liame.org',username:'Guest',address:'Moon',payment:'Spacebucks',loggedin: false, advSetting:false},
 };
 
 // Create a slice

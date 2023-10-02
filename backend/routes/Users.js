@@ -25,7 +25,7 @@ router.put('/update', updateUser);
 // Create PUT route to update an User Password
 router.put('/update/password', updatePassword);
 // Create DELETE route to remove a User
-router.delete('/get/:id', deleteUser);
+router.post('/delete', deleteUser);
 // Create GET route to read a list oll Users
 router.get('/allUsers', getAllUsers,read);
 
