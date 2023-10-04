@@ -1,5 +1,4 @@
 import axios from 'axios';
-//mock API
 let API_URL = process.env.REACT_APP_BACKEND_URL;
 
 export const postRequest = async (endpoint,data) => {

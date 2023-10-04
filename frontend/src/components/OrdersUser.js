@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {getRequest,fetchData} from '../api/index.js';
+import {getRequest} from '../api/index.js';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import OrderList from './OrderList';
